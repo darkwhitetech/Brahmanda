@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bramhanda - Music Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* --- Golden Theme Color Palette --- */
         :root {
@@ -24,6 +25,9 @@
             overflow-x: hidden;
             background-color: var(--dark-background);
             color: var(--text-color);
+            align-items: center;
+            
+
         }
 
         /* --- Header Styles --- */
@@ -452,6 +456,315 @@
                 font-size: 1em;
             }
         }
+          .recording-complex-wrapper {
+            max-width: 1200px;
+            width: 100%;
+           align-items: auto;
+           margin: 50px auto;
+        }
+
+        .studio-masthead {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            align-items: center;
+            
+        }
+
+        .production-showcase {
+            position: relative;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+        }
+
+        .recording-milestone {
+            display: none;
+            animation: fadeTransition 0.8s ease-in-out;
+        }
+
+        .recording-milestone.current-display {
+            display: block;
+        }
+
+        @keyframes fadeTransition {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .studio-gallery {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .production-snapshot {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .session-description {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 100%);
+            padding: 30px;
+            font-style: italic;
+            color: #ffd700;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            border-top: 2px solid #d4af37;
+        }
+
+        .console-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .mixer-control-button {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .mixer-control-button:hover {
+            background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .mixer-control-button:active {
+            transform: scale(0.95);
+        }
+
+        .track-selector-panel {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .track-indicator-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+            border: 2px solid #d4af37;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .track-indicator-light.illuminated-indicator {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+
+        .track-indicator-light:hover {
+            background: #d4af37;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .studio-masthead {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+
+            .studio-gallery {
+                height: 350px;
+            }
+
+            .session-description {
+                padding: 20px;
+                font-size: 1rem;
+            }
+
+            .mixer-control-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+
+
+
+        .studio-wrapper {
+            margin-top: 50px;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .title-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .main-heading {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            background: linear-gradient(45deg, #d4af37, #f4e5a1, #d4af37);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 15px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline-text {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: #b8941e;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .questions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .question-card.active {
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .question-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .question-header:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .question-card.active .question-header {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .query-title {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            color: #d4af37;
+            flex: 1;
+        }
+
+        .toggle-indicator {
+            font-size: 1.5rem;
+            color: #d4af37;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+        }
+
+        .question-card.active .toggle-indicator {
+            transform: rotate(180deg);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .answer-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 25px;
+        }
+
+        .question-card.active .answer-panel {
+            max-height: 500px;
+            padding: 0 25px 25px 25px;
+        }
+
+        .response-content {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.7;
+            color: #b8941e;
+            padding-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .question-header {
+                padding: 15px 20px;
+            }
+
+            .toggle-indicator {
+                width: 25px;
+                height: 25px;
+                font-size: 1.2rem;
+            }
+        }
 
 
 /* --- Footer --- */
@@ -459,6 +772,7 @@
     font-family: var(--font-stack);
     background-color: #000000; 
     color: var(--text-color);
+    margin-top: 40px;
 }
 
 .footer-main-content {
@@ -601,6 +915,163 @@
         margin: 0 5px;
     }
 }
+
+     .container2 {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 20px 0 40px 0;
+            cursor: grab;
+            scrollbar-width: thin;
+            scrollbar-color: #FFD700 #2a2a2a;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #2a2a2a;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 10px;
+        }
+
+        .scroll-container:active {
+            cursor: grabbing;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
+            width: max-content;
+        }
+
+        .facility-card {
+            background: linear-gradient(145deg, #1f1f1f, #151515);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            padding: 40px 30px;
+            min-width: 280px;
+            max-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .facility-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+            border-color: #FFA500;
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.3);
+        }
+
+        .facility-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 3px solid #FFD700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .icon-circle i {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .facility-card:hover .icon-circle {
+            transform: scale(1.1) rotate(5deg);
+            border-color: #FFA500;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .facility-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .facility-description {
+            font-size: 0.95em;
+            color: #b0b0b0;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+                margin-bottom: 40px;
+            }
+
+            .facility-card {
+                min-width: 240px;
+                max-width: 240px;
+                padding: 30px 20px;
+            }
+
+            .icon-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .icon-circle i {
+                font-size: 3em;
+            }
+        }
   </style>
 </head>
 <body>
@@ -658,6 +1129,183 @@
             <p>At Bramhanda, we believe that music is the universal language that connects souls. Our studio was born from a passion for pristine sound and a desire to create an environment where artists can truly flourish. We blend state-of-the-art technology with a deep understanding of musical artistry to help you achieve the perfect sound. Whether you are a seasoned professional or a budding artist, our mission is to provide you with the tools, expertise, and creative space to bring your sonic vision to life. We are more than just a studio; we are collaborators in your creative journey.</p>
         </div>
     </section>
+
+
+
+    <div class="container2">
+        <h1>Top Class Facilities</h1>
+        
+        <div class="scroll-container">
+            <div class="cards-wrapper">
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 class="facility-name">Premium Microphones</h3>
+                    <p class="facility-description">Industry-standard condenser and dynamic mics for crystal-clear recordings</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 class="facility-name">Studio Monitors</h3>
+                    <p class="facility-description">High-fidelity speakers delivering accurate sound reproduction</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="facility-name">MIDI Keyboards</h3>
+                    <p class="facility-description">Professional-grade controllers with weighted keys and full mapping</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-guitar"></i>
+                    </div>
+                    <h3 class="facility-name">Instruments</h3>
+                    <p class="facility-description">Premium guitars, basses, and acoustic instruments ready to record</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="facility-name">Mixing Console</h3>
+                    <p class="facility-description">Professional-grade mixing boards for seamless audio control</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h3 class="facility-name">Studio Headphones</h3>
+                    <p class="facility-description">Reference-quality monitoring headphones for precise audio work</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-drum"></i>
+                    </div>
+                    <h3 class="facility-name">Drum Kit</h3>
+                    <p class="facility-description">Acoustic and electronic drum sets with premium cymbals</p>
+                </div>
+
+                <div class="facility-card">
+                    <div class="icon-circle">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <h3 class="facility-name">Audio Interface</h3>
+                    <p class="facility-description">High-end converters ensuring pristine digital audio quality</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <div class="recording-complex-wrapper">
+        <h1 class="studio-masthead">Studio Achievements</h1>
+        
+        <div class="production-showcase">
+            <div class="recording-milestone current-display">
+                <div class="studio-gallery">
+                    <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1200&h=500&fit=crop" alt="Recording Session" class="production-snapshot">
+                </div>
+                <div class="session-description">
+                    Collaborated with internationally acclaimed producer Marcus Rivera to record a breakthrough album featuring 12 original compositions in our flagship Studio A.
+                </div>
+            </div>
+
+            <div class="recording-milestone">
+                <div class="studio-gallery">
+                    <img src="https://images.unsplash.com/photo-1519508234439-4f23643125c1?w=1200&h=500&fit=crop" alt="Mixing Console" class="production-snapshot">
+                </div>
+                <div class="session-description">
+                    Engineered and mixed chart-topping tracks for over 75 artists across multiple genres, utilizing our state-of-the-art SSL mixing console and premium outboard gear.
+                </div>
+            </div>
+
+            <div class="recording-milestone">
+                <div class="studio-gallery">
+                    <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=1200&h=500&fit=crop" alt="Live Recording" class="production-snapshot">
+                </div>
+                <div class="session-description">
+                    Successfully captured pristine live orchestra performances with our 48-channel recording setup, delivering audiophile-grade quality for prestigious film scores.
+                </div>
+            </div>
+
+            <div class="recording-milestone">
+                <div class="studio-gallery">
+                    <img src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=1200&h=500&fit=crop" alt="Award Winning" class="production-snapshot">
+                </div>
+                <div class="session-description">
+                    Honored with the Gold Record Award for our exceptional mastering work on five platinum-certified albums, setting new industry standards for sonic excellence.
+                </div>
+            </div>
+        </div>
+
+        <div class="console-navigation">
+            <button class="mixer-control-button" onclick="navigateTracks(-1)">‹</button>
+            <button class="mixer-control-button" onclick="navigateTracks(1)">›</button>
+        </div>
+
+        <div class="track-selector-panel">
+            <span class="track-indicator-light illuminated-indicator" onclick="jumpToTrack(0)"></span>
+            <span class="track-indicator-light" onclick="jumpToTrack(1)"></span>
+            <span class="track-indicator-light" onclick="jumpToTrack(2)"></span>
+            <span class="track-indicator-light" onclick="jumpToTrack(3)"></span>
+        </div>
+    </div>
+
+    <div class="studio-wrapper">
+        <div class="title-section">
+            <div class="main-heading">Frequently Asked Questions</div>
+            <p class="tagline-text">Everything about our music studio</p>
+        </div>
+
+        <div class="questions-grid">
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="query-title">What recording equipment do you have?</span>
+                    <span class="toggle-indicator">▼</span>
+                </div>
+                <div class="answer-panel">
+                    <p class="response-content">Our studio is equipped with industry-standard gear including SSL console, Neumann and AKG microphones, Universal Audio preamps, Pro Tools HDX system, and a collection of vintage and modern outboard gear. We also have a wide selection of instruments including guitars, keyboards, and drums.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="query-title">How much does studio time cost?</span>
+                    <span class="toggle-indicator">▼</span>
+                </div>
+                <div class="answer-panel">
+                    <p class="response-content">Our hourly rates vary depending on the engineer level and services required. Standard recording sessions start at competitive rates, with discounted packages available for full-day bookings and multi-day projects. Contact us for a custom quote tailored to your project needs.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="query-title">Do you offer mixing and mastering services?</span>
+                    <span class="toggle-indicator">▼</span>
+                </div>
+                <div class="answer-panel">
+                    <p class="response-content">Yes! We provide professional mixing and mastering services for all genres. Our experienced engineers use a hybrid approach combining analog warmth with digital precision. We can work with stems recorded at our studio or external recordings, and offer revision rounds to ensure your satisfaction.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="query-title">Can I bring my own producer or engineer?</span>
+                    <span class="toggle-indicator">▼</span>
+                </div>
+                <div class="answer-panel">
+                    <p class="response-content">Absolutely! You're welcome to bring your own producer or engineer. We offer dry hire rates for independent sessions, and our staff is available to assist with technical setup and ensure everything runs smoothly. We're here to support your creative vision however works best for you.</p>
+                </div>
+            </div>
+
+
     <footer class="studio-footer-section">
     <div class="footer-main-content">
         
@@ -707,6 +1355,116 @@
         const menuNav = document.getElementById('mainNav');
         menuNav.classList.toggle('active');
     }
+
+    const scrollContainer = document.querySelector('.scroll-container');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        scrollContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            scrollContainer.style.cursor = 'grabbing';
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
+        });
+
+        scrollContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            scrollContainer.style.cursor = 'grab';
+        });
+
+        scrollContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            scrollContainer.style.cursor = 'grab';
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            scrollContainer.scrollLeft = scrollLeft - walk;
+        });
+
+         function toggleAnswer(element) {
+            const questionCard = element.parentElement;
+            const wasActive = questionCard.classList.contains('active');
+            
+            // Close all question cards
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // If the clicked card wasn't active, open it
+            if (!wasActive) {
+                questionCard.classList.add('active');
+            }
+        }
+
+        // Optional: Close FAQ when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.question-card')) {
+                document.querySelectorAll('.question-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+            }
+        });
+
+          let currentMilestoneIndex = 0;
+        let autoPlayTimer;
+        const allMilestones = document.getElementsByClassName('recording-milestone');
+        const allTrackLights = document.getElementsByClassName('track-indicator-light');
+        const autoPlayDelay = 4000;
+
+        function displayMilestone(milestoneNumber) {
+            if (milestoneNumber >= allMilestones.length) {
+                currentMilestoneIndex = 0;
+            }
+            if (milestoneNumber < 0) {
+                currentMilestoneIndex = allMilestones.length - 1;
+            }
+
+            for (let i = 0; i < allMilestones.length; i++) {
+                allMilestones[i].classList.remove('current-display');
+                allTrackLights[i].classList.remove('illuminated-indicator');
+            }
+
+            allMilestones[currentMilestoneIndex].classList.add('current-display');
+            allTrackLights[currentMilestoneIndex].classList.add('illuminated-indicator');
+        }
+
+        function navigateTracks(direction) {
+            clearInterval(autoPlayTimer);
+            currentMilestoneIndex += direction;
+            displayMilestone(currentMilestoneIndex);
+            startAutoPlay();
+        }
+
+        function jumpToTrack(milestoneNumber) {
+            clearInterval(autoPlayTimer);
+            currentMilestoneIndex = milestoneNumber;
+            displayMilestone(currentMilestoneIndex);
+            startAutoPlay();
+        }
+
+        function autoAdvanceMilestones() {
+            currentMilestoneIndex++;
+            displayMilestone(currentMilestoneIndex);
+        }
+
+        function startAutoPlay() {
+            autoPlayTimer = setInterval(autoAdvanceMilestones, autoPlayDelay);
+        }
+
+        startAutoPlay();
+
+        document.querySelector('.production-showcase').addEventListener('mouseenter', () => {
+            clearInterval(autoPlayTimer);
+        });
+
+        document.querySelector('.production-showcase').addEventListener('mouseleave', () => {
+            startAutoPlay();
+        });
     
     </script>
 </body>
