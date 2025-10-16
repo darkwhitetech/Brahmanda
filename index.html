@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bramhanda - Music Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- Golden Theme Color Palette --- */
+        :root {
+            --gold: #d4af37;
+            --dark-background: #1a1a1a;
+            --text-color: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+        }
+
+        /* --- Header Styles --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 50px; /* Reduced vertical padding */
+        }
+
+        /* The nav now acts as the primary flex container for the logo and links */
+        nav {
+            display: flex;
+            justify-content: center; /* Center everything */
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100px; /* Base height */
+        }
+
+        /* --- Logo Styles (Centered and Absolute) --- */
+        .logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 120px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Allows click through to links behind it if logo image is transparent */
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* --- Navigation Links Container --- */
+        .main-nav {
+            display: flex;
+            justify-content: space-between; /* Space out items */
+            align-items: center;
+            width: 100%;
+            max-width: 1100px; /* Control max spread of links */
+            list-style: none;
+            position: relative;
+            /* Ensure the nav list itself is centered and takes up the horizontal space */
+        }
+
+        .main-nav li {
+            text-align: center;
+            flex-basis: 20%; /* Give equal space for the 4 links + 1 reserved logo spot (20% * 5 = 100%) */
+        }
+
+        /* Hiding the logo's physical space placeholder */
+        .logo-placeholder {
+            flex-basis: 20%;
+            width: 20%;
+            visibility: hidden;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 8px;
+            transition: color 0.4s ease;
+        }
+
+        /* Classy underline hover effect */
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--gold);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- Carousel Styles --- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .carousel-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2;
+        }
+
+        /* Quote Overlay */
+        .carousel-quote {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: var(--text-color);
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .carousel-quote h2 {
+            font-size: 3.5em;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-quote p {
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+
+        /* Carousel Controls */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid var(--gold);
+            color: var(--text-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(212, 175, 55, 0.5);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        /* Decorative Corners */
+        .corner {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--gold);
+            z-index: 999;
+        }
+
+        .corner.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* --- Variables --- */
+:root {
+    --gold: #d4af37; /* Defined golden color */
+    --dark-background: #1a1a1a;
+    --text-color: #f5f5f5;
+    --secondary-text-color: #cccccc;
+    --font-stack: 'Montserrat', sans-serif;
+}
+
+/* 1. Main Section Container (.composers-section) */
+.composers-section {
+    font-family: var(--font-stack);
+    background-color: var(--dark-background);
+    color: var(--text-color);
+    padding: 100px 20px;
+    text-align: center;
+}
+
+/* 2. Inner Content Wrapper (.composers-container) */
+.composers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 3. Main Title (.composers-section-title) */
+.composers-section-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* 4. Subtitle Text (.composers-section-subtitle) */
+.composers-section-subtitle {
+    font-size: 1.1em;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto 80px;
+    color: var(--text-color);
+}
+
+/* 5. Features Grid Layout (.composers-features-grid) */
+.composers-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 100px; /* Vertical and horizontal gap */
+    text-align: left;
+}
+
+/* 6. Individual Feature Card (.composers-feature-card) */
+.composers-feature-card {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    cursor: pointer; /* Indicate interactivity */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover */
+    padding: 15px; /* Add some padding for the hover effect area */
+    border-radius: 8px; /* Slightly rounded corners */
+}
+
+/* Hover Effect for Card */
+.composers-feature-card:hover {
+    transform: translateY(-5px); /* Lift card slightly */
+    background-color: rgba(212, 175, 55, 0.05); /* Very subtle gold background */
+}
+
+/* 7. Icon Container (.composers-icon-box) */
+.composers-icon-box {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 8. Icon Element (i inside .composers-icon-box) */
+.composers-icon-box i {
+    font-size: 3em;
+    color: var(--text-color); /* Default icon color */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for icon color */
+}
+
+/* Hover Effect for Icon */
+.composers-feature-card:hover .composers-icon-box i {
+    color: var(--gold); /* Change icon color to gold on hover */
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.7); /* Subtle glow effect */
+}
+
+/* 9. Text Content Wrapper (.composers-text-content) */
+
+/* 10. Card Title (.composers-card-title) */
+.composers-card-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    transition: color 0.3s ease; /* Smooth transition for title color */
+}
+
+/* Hover Effect for Card Title */
+.composers-feature-card:hover .composers-card-title {
+    color: var(--gold); /* Change title color to gold on hover */
+}
+
+/* 11. Card Text (.composers-card-text) */
+.composers-card-text {
+    font-size: 0.95em;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--secondary-text-color);
+}
+
+/* --- Responsive Adjustments --- */
+
+/* 12. Media Query for Tablet/Small Desktop */
+@media (max-width: 992px) {
+    .composers-features-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 0 50px;
+    }
+}
+
+/* 13. Media Query for Mobile */
+@media (max-width: 576px) {
+    .composers-section {
+        padding: 60px 10px;
+    }
+    
+    .composers-section-title {
+        font-size: 2em;
+    }
+    
+    .composers-section-subtitle {
+        margin-bottom: 40px;
+    }
+
+    .composers-features-grid {
+        padding: 0 10px;
+    }
+    
+    .composers-icon-box {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .composers-icon-box i {
+        font-size: 2.5em;
+    }
+    
+    .composers-feature-card {
+        padding: 10px; /* Reduce padding on mobile */
+    }
+}
+
+        /* --- Mobile Styles --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                height: auto;
+            }
+
+            nav {
+                flex-direction: column;
+                height: auto;
+                justify-content: flex-start; /* Align elements to the top on mobile */
+            }
+
+            .logo {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 150px;
+                height: 80px;
+                margin-bottom: 15px;
+                order: -1; /* Put the logo first */
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px 0;
+                width: 100%;
+                max-width: none;
+                text-align: center;
+                background: rgba(26, 26, 26, 0.9);
+            }
+
+            .main-nav.active {
+                display: flex;
+            }
+
+            /* Hide placeholder on mobile to allow links to stack */
+            .logo-placeholder {
+                display: none;
+            }
+
+            .carousel-container {
+                height: 60vh;
+            }
+
+            .carousel-quote h2 {
+                font-size: 2em;
+            }
+
+            .carousel-quote p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav a {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .corner {
+                display: none;
+            }
+        }
+
+
+
+        /* --- Variables --- */
+/* Kept variables here for colors only, removed global background setting */
+:root {
+    --gold: #d4af37;
+    --light-text: #ffffff;
+    --highlight-text: var(--gold); 
+    --font-stack: 'Montserrat', sans-serif;
+    --transition-speed: 0.3s;
+    /* Define the dark background color locally for contrast */
+    --local-dark-background: #000000;
+    --local-dark-text: #000000;
+}
+
+/* 1. Main Banner Container (.dolby-banner-section) */
+/* **LOCAL BACKGROUND APPLICATION HERE** */
+.dolby-banner-section {
+    font-family: var(--font-stack);
+    /* Applying the background color directly to the section */
+    background-color: var(--local-dark-background); 
+    padding: 120px 20px;
+    position: relative;
+    overflow: hidden; 
+    height: 500px;
+    display: flex;
+    align-items: center;
+}
+
+/* 2. Content Alignment (.dolby-banner-content) */
+.dolby-banner-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* 3. Main Headline (H1) (.dolby-banner-headline) */
+.dolby-banner-headline {
+    color: var(--light-text);
+    font-size: 3.5vw;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: left;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* 4. Highlighted Text (.dolby-highlight) */
+.dolby-highlight {
+    color: var(--highlight-text);
+    text-shadow: 
+        0 0 10px var(--gold),
+        0 0 20px rgba(212, 175, 55, 0.8),
+        0 0 30px rgba(212, 175, 55, 0.5);
+    display: block; 
+}
+
+/* 5. "Learn More" Button (.dolby-learn-more-btn) */
+.dolby-learn-more-btn {
+    text-decoration: none;
+    /* Use the local dark background color for button text */
+    color: var(--local-dark-text); 
+    background-color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 15px 35px;
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5); 
+    flex-shrink: 0;
+}
+
+/* 6. Button Interactivity (Hover) */
+.dolby-learn-more-btn:hover {
+    color: var(--gold);
+    background-color: transparent; 
+    box-shadow: 0 0 20px var(--gold), 0 0 30px rgba(212, 175, 55, 0.7);
+}
+
+/* 7. Decorative Wave Pattern (.dolby-wave-pattern) */
+.dolby-wave-pattern {
+    position: absolute;
+    bottom: -100px; 
+    right: -100px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    /* Creating the subtle golden rings */
+    box-shadow: 
+        0 0 0 3px rgba(212, 175, 55, 0.1),
+        0 0 0 6px rgba(212, 175, 55, 0.05),
+        0 0 0 100px rgba(212, 175, 55, 0.03),
+        0 0 0 200px rgba(212, 175, 55, 0.02);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .dolby-banner-section {
+        height: auto;
+        padding: 80px 20px;
+    }
+    
+    .dolby-banner-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .dolby-banner-headline {
+        font-size: 5vw;
+        text-align: center;
+    }
+
+    .dolby-learn-more-btn {
+        margin-top: 20px;
+    }
+
+    .dolby-wave-pattern {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .dolby-banner-headline {
+        font-size: 7vw;
+    }
+}
+
+/* --- Variables --- */
+:root {
+    --gold: #d4af37;
+    --dark-background: #1a1a1a;
+    --text-color: #f5f5f5;
+    --secondary-text-color: #cccccc;
+    --card-background: #0d0d0d; /* Slightly darker than main background for card effect */
+    --font-stack: 'Montserrat', sans-serif;
+    --transition-speed: 0.3s;
+}
+
+/* 1. Main Section Container (.location-card-section) */
+.location-card-section {
+    font-family: var(--font-stack);
+    background-color: var(--dark-background);
+    padding: 100px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh; /* Ensure it takes up a good portion of the viewport */
+    color: var(--text-color);
+}
+
+/* 2. Card Container (.location-card-container) */
+.location-card-container {
+    display: flex;
+    background-color: var(--card-background);
+    border-radius: 10px;
+    overflow: hidden; /* Important for child elements' border-radius */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(212, 175, 55, 0.3); /* Subtle gold border/glow */
+    max-width: 1000px; /* Max width for the entire card */
+    width: 100%;
+}
+
+/* 3. Map Area (.location-map-area) */
+.location-map-area {
+    flex: 1; /* Takes up equal space initially */
+    min-height: 400px; /* Minimum height for the map */
+    position: relative;
+    overflow: hidden; /* For rounded corners */
+}
+
+.location-map-area iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove default iframe border */
+}
+
+/* 4. Details Area (.location-details-area) */
+.location-details-area {
+    flex: 1; /* Takes up equal space initially */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: flex-start; /* Align text to the left */
+    gap: 20px;
+}
+
+/* 5. Card Title (.location-card-title) */
+.location-card-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--gold); /* Golden title */
+    margin-bottom: 10px;
+}
+
+/* 6. Card Description (.location-card-description) */
+.location-card-description {
+    font-size: 1em;
+    line-height: 1.6;
+    color: var(--secondary-text-color);
+}
+
+/* 7. Address Block (.location-address) */
+.location-address {
+    font-style: normal; /* Remove italic from address tag */
+    font-size: 1em;
+    line-height: 1.5;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.location-address strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* 8. Reserve Button (.location-reserve-btn) */
+.location-reserve-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--dark-background); /* Dark text on golden button */
+    background-color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 15px 30px;
+    font-size: 1em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    transition: all var(--transition-speed) ease;
+    margin-top: 20px;
+}
+
+/* 9. Button Hover Effect */
+.location-reserve-btn:hover {
+    background-color: transparent;
+    color: var(--gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); /* Subtle glow on hover */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .location-card-container {
+        flex-direction: column; /* Stack map and details vertically */
+    }
+
+    .location-map-area {
+        min-height: 300px; /* Slightly reduce map height on smaller screens */
+    }
+
+    .location-details-area {
+        padding: 30px;
+        align-items: center; /* Center text when stacked */
+        text-align: center;
+    }
+
+    .location-card-title {
+        font-size: 1.8em;
+    }
+
+    .location-card-description,
+    .location-address {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 576px) {
+    .location-card-section {
+        padding: 60px 10px;
+    }
+
+    .location-details-area {
+        padding: 20px;
+    }
+
+    .location-card-title {
+        font-size: 1.5em;
+    }
+
+    .location-reserve-btn {
+        padding: 12px 25px;
+        font-size: 0.9em;
+    }
+}
+
+/* 1. Main Footer Container (.studio-footer-section) */
+.studio-footer-section {
+    font-family: var(--font-stack);
+    /* Applying the black background color directly to the section */
+    background-color: #000000; 
+    color: var(--text-color);
+}
+
+/* 2. Main Content Wrapper (.footer-main-content) */
+.footer-main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* 3. Logo Area (.footer-logo-area) */
+.footer-logo-area {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    max-width: 200px;
+    height: auto;
+    /* Retained filter to ensure the logo is visible against black, 
+       as discussed, this makes a dark logo white/light. */
+
+}
+
+/* 4. Column Headers (.footer-heading) */
+.footer-heading {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+/* 5. Contact Column (.footer-contact) */
+.footer-column {
+    flex-basis: 30%;
+    line-height: 1.6;
+}
+
+.footer-contact .contact-details p {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+    color: var(--secondary-text-color);
+}
+
+.footer-contact .contact-details strong {
+    color: var(--text-color);
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+}
+
+/* 6. Social Media Icons (.footer-social) */
+.footer-social {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon-link {
+    color: var(--text-color);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) ease;
+}
+
+.social-icon-link:hover {
+    color: var(--gold);
+}
+
+/* 7. Training/Services Column (.footer-training) */
+.footer-training {
+    flex-basis: 30%;
+}
+
+.footer-training a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    font-size: 0.95em;
+    transition: color var(--transition-speed) ease;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.footer-training a:hover {
+    color: var(--gold);
+}
+
+/* 8. Bottom Copyright Strip (.footer-bottom-strip) */
+.footer-bottom-strip {
+    /* Ensuring the strip is also black */
+    background-color: #000000; 
+    padding: 20px 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+}
+
+/* 9. Copyright Text (.footer-copyright) */
+.footer-copyright {
+    font-size: 0.8em;
+    color: var(--secondary-text-color);
+    line-height: 1.8;
+}
+
+.footer-copyright a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.footer-copyright a:hover {
+    color: var(--gold);
+}
+
+.powered-link {
+    color: var(--gold) !important;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .footer-main-content {
+        flex-direction: column;
+        padding: 40px 20px;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .footer-logo-area {
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .footer-column {
+        flex-basis: 100%;
+        max-width: 300px;
+    }
+
+    .footer-heading {
+        margin-bottom: 15px;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-training a {
+        display: inline;
+        margin: 0 5px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+
+    <header>
+        <nav>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <img src="logo.png" href="index.html" alt="Bramhanda Music Studio Logo">
+            </div>
+
+            <ul class="main-nav" id="mainNav">
+                <li><a href="../index.html">HOME</a></li>
+                <li><a href="../about.html">ABOUT</a></li>
+
+                <li class="logo-placeholder"></li>
+
+                <li><a href="gallary/gallary.html">GALLERY</a></li>
+                <li><a href="contact/contact.html">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <div class="carousel-slide">
+                <img src="images/image.png" alt="Music Studio Control Room">
+                <div class="carousel-quote">
+                    <h2>Where Creativity Meets Sound</h2>
+                    <p>Crafting sonic masterpieces that resonate with the soul.</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="images/image copy.png" alt="Audio Mixing Board">
+                <div class="carousel-quote">
+                    <h2>Precision in Every Note</h2>
+                    <p>Experience world-class mixing and mastering services.</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="images/image copy 2.png" alt="Vocal Recording Booth">
+                <div class="carousel-quote">
+                    <h2>Your Vision, Our Expertise</h2>
+                    <p>Bringing your musical dreams to life with unparalleled quality.</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-btn prev" onclick="moveSlide(-1)">‹</button>
+        <button class="carousel-btn next" onclick="moveSlide(1)">›</button>
+
+
+
+    </div>
+
+    <section class="composers-section">
+    <div class="composers-container">
+        <h2 class="composers-section-title" style="color:#d4af37">Our Bramandha Of Services</h2>
+        <p class="composers-section-subtitle">
+            Music from the world’s top composers, producers, and artists for use in film, television, advertising, 
+            gaming, radio, podcasts, and digital media.
+        </p>
+
+        <div class="composers-features-grid">
+            
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-file-contract"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">Music licensing</h3>
+                    <p class="composers-card-text">Guidance for single-track clearances to licenses for multiple channels worldwide.</p>
+                </div>
+            </div>
+
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-compact-disc"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">World-leading catalog</h3>
+                    <p class="composers-card-text">Over 240,000 original tracks across every genre for your project.</p>
+                </div>
+            </div>
+
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-robot"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">AI tools to enhance your search</h3>
+                    <p class="composers-card-text">Find similar tracks faster with custom Search tools, powered by AI technology.</p>
+                </div>
+            </div>
+
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-headphones-simple"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">Music Direction & Custom Music</h3>
+                    <p class="composers-card-text">Bespoke music for any media type and complimentary music searches from our expert Music Directors.</p>
+                </div>
+            </div>
+            
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-tree"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">Soundtrack for a greener future</h3>
+                    <p class="composers-card-text">Looking for sustainable music for your production? Access over 600 tracks produced by our green music composers.</p>
+                </div>
+            </div>
+
+            <div class="composers-feature-card">
+                <div class="composers-icon-box">
+                    <i class="fa-solid fa-sliders"></i> </div>
+                <div class="composers-text-content">
+                    <h3 class="composers-card-title">Stems available</h3>
+                    <p class="composers-card-text">Create your own soundtrack with stems.</p>
+                </div>
+            </div>
+        
+
+        </div>
+    </div>
+
+</section>
+
+<section class="dolby-banner-section">
+    <div class="dolby-banner-content">
+        <!-- Main headline, split into two lines for effect -->
+        <h1 class="dolby-banner-headline">
+            NEPAL'S FIRST AUTHENTIC
+            <span class="dolby-highlight">DOLBY SYSTEM STUDIO</span>
+        </h1>
+        
+        <!-- The call-to-action button -->
+        <a href="about/about.html" class="dolby-learn-more-btn">LEARN MORE</a>
+    </div>
+
+    <!-- Decorative Wave Pattern (CSS-only for this file) -->
+    <div class="dolby-wave-pattern"></div>
+</section>
+
+<section class="location-card-section">
+    <div class="location-card-container">
+        
+        <div class="location-map-area">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14132.894379435747!2d85.3134375!3d27.6789062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a4e211e2f7%3A0x8e8e8e8e8e8e8e8e!2sLalitpur%2C%20Nepal!5e0!3m2!1sen!2snp!4v1700000000000!5m2!1sen!2snp" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade"
+                aria-label="Studio Location Map"
+            ></iframe>
+        </div>
+
+        <div class="location-details-area">
+            <h2 class="location-card-title">Our Studio Location</h2>
+            <p class="location-card-description">
+                Experience world-class audio production at our state-of-the-art studio.<br>
+                Conveniently located in the vibrant city of Lalitpur, Nepal.
+            </p>
+            <address class="location-address">
+                <strong>Bramhanda Music Studio</strong><br>
+                Lalitpur, Bagmati Province<br>
+                Nepal
+            </address>
+            <a href="contact/contact.html" class="location-reserve-btn">RESERVE STUDIO NOW</a>
+        </div>
+
+    </div>
+</section>
+
+<footer class="studio-footer-section">
+    <div class="footer-main-content">
+        
+        <div class="footer-logo-area">
+            <img src="logo.png" alt="Bramhanda Music Studio Logo" class="footer-logo">
+        </div>
+        
+        <div class="footer-column footer-contact">
+            <h4 class="footer-heading">Contact</h4>
+            <div class="contact-details">
+                <p><strong>Head Office:</strong></p>
+                <p>Bhanimandal, Lalitpur, Nepal</p>
+                <p><strong>Administrative Office:</strong></p>
+                <p>Dhobighat, Lalitpur, Nepal</p>
+                <p>info@bramhandastudio.com</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram" class="social-icon-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook" class="social-icon-link"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column footer-training">
+            <h4 class="footer-heading">Services & Studio Info</h4>
+            <div class="training-details">
+                <p><a href="#services">Mixing & Mastering</a></p>
+                <p><a href="#dolby">Dolby Atmos System</a></p>
+                <p><a href="#reserve">Reserve Studio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom-strip">
+        <p class="footer-copyright">
+            <a href="#terms">Terms and Conditions</a> | 
+            <a href="#privacy">Privacy Policy</a> | 
+            <a href="#contact">Contact</a>
+            <br>
+            &copy; Bramhanda Studio 2025. Powered By: <a href="#powered" class="powered-link">Dark White technology</a>
+        </p>
+    </div>
+</footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        let autoSlideInterval;
+
+        function showSlide(index) {
+            const carousel = document.getElementById('carousel');
+            
+            if (index >= totalSlides) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = index;
+            }
+            
+            const offset = -currentSlide * 100;
+            carousel.style.transform = `translateX(${offset}%)`;
+        }
+
+        function moveSlide(direction) {
+            clearInterval(autoSlideInterval);
+            showSlide(currentSlide + direction);
+            startAutoSlide();
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 3000); /* Auto-scroll */
+        }
+
+        function toggleMenu() {
+            const mainNav = document.getElementById('mainNav');
+            mainNav.classList.toggle('active');
+        }
+
+        // Start automatic sliding
+        startAutoSlide();
+
+      
+
+        // Touch swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carouselContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carouselContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                moveSlide(1);
+            }
+            if (touchEndX > touchStartX + 50) {
+                moveSlide(-1);
+            }
+        }
+    </script>
+</body>
+</html>

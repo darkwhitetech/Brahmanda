@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bramhanda - Music Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Golden Theme Color Palette --- */
+        :root {
+            --gold: #d4af37;
+            --dark-background: #1a1a1a;
+            --text-color: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+        }
+
+        /* --- Header Styles --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 50px; /* Reduced vertical padding */
+        }
+
+        /* The nav now acts as the primary flex container for the logo and links */
+        nav {
+            display: flex;
+            justify-content: center; /* Center everything */
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100px; /* Base height */
+        }
+
+        /* --- Logo Styles (Centered and Absolute) --- */
+        .logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 120px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Allows click through to links behind it if logo image is transparent */
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* --- Navigation Links Container --- */
+        .main-nav {
+            display: flex;
+            justify-content: space-between; /* Space out items */
+            align-items: center;
+            width: 100%;
+            max-width: 1100px; /* Control max spread of links */
+            list-style: none;
+            position: relative;
+            /* Ensure the nav list itself is centered and takes up the horizontal space */
+        }
+
+        .main-nav li {
+            text-align: center;
+            flex-basis: 20%; /* Give equal space for the 4 links + 1 reserved logo spot (20% * 5 = 100%) */
+        }
+
+        /* Hiding the logo's physical space placeholder */
+        .logo-placeholder {
+            flex-basis: 20%;
+            width: 20%;
+            visibility: hidden;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 8px;
+            transition: color 0.4s ease;
+        }
+
+        /* Classy underline hover effect */
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--gold);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+/* 12. Media Query for Tablet/Small Desktop */
+@media (max-width: 992px) {
+    .composers-features-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 0 50px;
+    }
+}
+
+/* 13. Media Query for Mobile */
+@media (max-width: 576px) {
+    .composers-section {
+        padding: 60px 10px;
+    }
+    
+    .composers-section-title {
+        font-size: 2em;
+    }
+    
+    .composers-section-subtitle {
+        margin-bottom: 40px;
+    }
+
+    .composers-features-grid {
+        padding: 0 10px;
+    }
+    
+    .composers-icon-box {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .composers-icon-box i {
+        font-size: 2.5em;
+    }
+    
+    .composers-feature-card {
+        padding: 10px; /* Reduce padding on mobile */
+    }
+}
+
+        /* --- Mobile Styles --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                height: auto;
+            }
+
+            nav {
+                flex-direction: column;
+                height: auto;
+                justify-content: flex-start; /* Align elements to the top on mobile */
+            }
+
+            .logo {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 150px;
+                height: 80px;
+                margin-bottom: 15px;
+                order: -1; /* Put the logo first */
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px 0;
+                width: 100%;
+                max-width: none;
+                text-align: center;
+                background: rgba(26, 26, 26, 0.9);
+            }
+
+            .main-nav.active {
+                display: flex;
+            }
+
+            /* Hide placeholder on mobile to allow links to stack */
+            .logo-placeholder {
+                display: none;
+            }
+
+            .carousel-container {
+                height: 60vh;
+            }
+
+            .carousel-quote h2 {
+                font-size: 2em;
+            }
+
+            .carousel-quote p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav a {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .corner {
+                display: none;
+            }
+        }
+
+
+:root {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+body {
+     font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    padding: 60px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+    position: relative;
+    animation: fadeIn 0.8s ease-out;
+    margin: 100px auto 40px auto;
+}
+
+/* Optional: Add a subtle glow/light effect near the mouse */
+/* .container::after {
+    content: '';
+    position: absolute;
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: transform 0.1s linear;
+}
+*/
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title {
+    font-size: 3.5rem;
+    color: #d4af37;
+    margin-bottom: 20px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    animation: shimmer 3s infinite;
+    background: linear-gradient(90deg, #d4af37, #f4e5a5, #d4af37);
+    background-size: 200% auto;
+    /* Apply text gradient effect */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes shimmer {
+    0%, 100% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    color: #d4af37;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.description {
+    color: #c0c0c0;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.contact-info:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(10px);
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    background: #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    color: #000; /* Ensure icon glyph is black */
+}
+
+.contact-info:hover .icon {
+    transform: rotate(360deg);
+    background: #f4e5a5;
+}
+
+.contact-info a {
+    color: #d4af37;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.contact-info:hover a {
+    color: #f4e5a5;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    background: rgba(212, 175, 55, 0.2);
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    color: #d4af37;
+}
+
+.social-icon:hover {
+    background: #d4af37;
+    color: #000;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.5);
+}
+
+.form-section {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+label {
+    display: block;
+    color: #d4af37;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #d4af37, #b8941e);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.submit-btn:hover:before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Background Particles Styles */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background: #d4af37;
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+    opacity: 0.1;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-100px) rotate(180deg);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 968px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 40px 30px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+}
+
+/* Success Message Styles */
+.success-message {
+    display: none;
+    background: rgba(212, 175, 55, 0.2);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* 1. Main Footer Container (.studio-footer-section) */
+.studio-footer-section {
+    font-family: var(--font-stack);
+    /* Applying the black background color directly to the section */
+    background-color: #000000; 
+    color: var(--text-color);
+}
+
+/* 2. Main Content Wrapper (.footer-main-content) */
+.footer-main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* 3. Logo Area (.footer-logo-area) */
+.footer-logo-area {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    max-width: 200px;
+    height: auto;
+    /* Retained filter to ensure the logo is visible against black, 
+       as discussed, this makes a dark logo white/light. */
+
+}
+
+/* 4. Column Headers (.footer-heading) */
+.footer-heading {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+/* 5. Contact Column (.footer-contact) */
+.footer-column {
+    flex-basis: 30%;
+    line-height: 1.6;
+}
+
+.footer-contact .contact-details p {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+    color: var(--secondary-text-color);
+}
+
+.footer-contact .contact-details strong {
+    color: var(--text-color);
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+}
+
+/* 6. Social Media Icons (.footer-social) */
+.footer-social {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon-link {
+    color: var(--text-color);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) ease;
+}
+
+.social-icon-link:hover {
+    color: var(--gold);
+}
+
+/* 7. Training/Services Column (.footer-training) */
+.footer-training {
+    flex-basis: 30%;
+}
+
+.footer-training a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    font-size: 0.95em;
+    transition: color var(--transition-speed) ease;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.footer-training a:hover {
+    color: var(--gold);
+}
+
+/* 8. Bottom Copyright Strip (.footer-bottom-strip) */
+.footer-bottom-strip {
+    /* Ensuring the strip is also black */
+    background-color: #000000; 
+    padding: 20px 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+}
+
+/* 9. Copyright Text (.footer-copyright) */
+.footer-copyright {
+    font-size: 0.8em;
+    color: var(--secondary-text-color);
+    line-height: 1.8;
+}
+
+.footer-copyright a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.footer-copyright a:hover {
+    color: var(--gold);
+}
+
+.powered-link {
+    color: var(--gold) !important;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .footer-main-content {
+        flex-direction: column;
+        padding: 40px 20px;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .footer-logo-area {
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .footer-column {
+        flex-basis: 100%;
+        max-width: 300px;
+    }
+
+    .footer-heading {
+        margin-bottom: 15px;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-training a {
+        display: inline;
+        margin: 0 5px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+
+    <header>
+        <nav>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <img src="logo.png" href="../index.html" alt="Bramhanda Music Studio Logo">
+            </div>
+
+            <ul class="main-nav" id="mainNav">
+                <li><a href="../index.html">HOME</a></li>
+                <li><a href="../about/about.html">ABOUT</a></li>
+
+                <li class="logo-placeholder"></li>
+
+                <li><a href="../gallary/gallary.html">GALLERY</a></li>
+                <li><a href="../contact/contact.html">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+        <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="left-section">
+            <h1 class="title">Get in Touch</h1>
+            <p class="subtitle">I'd like to hear from you!</p>
+            <p class="description">If you have any inquiries or just want to say hi, please use the contact form! I'll get back to you as soon as possible.</p>
+            
+            <div class="contact-info">
+                <div class="icon">✉</div>
+                <a href="mailto:yukaidu.doralice@gmail.com">yukaidu.doralice@gmail.com</a>
+            </div>
+            
+            <div class="contact-info">
+                <div class="icon">📞</div>
+                <a href="tel:+9779801234567">+977 980-123-4567</a>
+            </div>
+            
+            <div class="contact-info">
+                <div class="icon">📍</div>
+                <span style="color: #d4af37;">Pātan, Bagmati Province, Nepal</span>
+            </div>
+            
+            <div class="social-icons">
+                <div class="social-icon" title="Instagram">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </div>
+                <div class="social-icon" title="Facebook">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </div>
+                <div class="social-icon" title="Discord">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                </div>
+                <div class="social-icon" title="Vimeo">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197a315.065 315.065 0 0 0 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.493 4.797l-.013.01z"/>
+                    </svg>
+                </div>
+                <div class="social-icon" title="LinkedIn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Message</button>
+                
+                <div class="success-message" id="successMessage">
+                    ✨ Thank you for your message! We'll get back to you soon.
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<footer class="studio-footer-section">
+    <div class="footer-main-content">
+        
+        <div class="footer-logo-area">
+            <img src="logo.png" alt="Bramhanda Music Studio Logo" class="footer-logo">
+        </div>
+        
+        <div class="footer-column footer-contact">
+            <h4 class="footer-heading">Contact</h4>
+            <div class="contact-details">
+                <p><strong>Head Office:</strong></p>
+                <p>Bhanimandal, Lalitpur, Nepal</p>
+                <p><strong>Administrative Office:</strong></p>
+                <p>Dhobighat, Lalitpur, Nepal</p>
+                <p>info@bramhandastudio.com</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram" class="social-icon-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook" class="social-icon-link"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column footer-training">
+            <h4 class="footer-heading">Services & Studio Info</h4>
+            <div class="training-details">
+                <p><a href="#services">Mixing & Mastering</a></p>
+                <p><a href="#dolby">Dolby Atmos System</a></p>
+                <p><a href="#reserve">Reserve Studio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom-strip">
+        <p class="footer-copyright">
+            <a href="#terms">Terms and Conditions</a> | 
+            <a href="#privacy">Privacy Policy</a> | 
+            <a href="#contact">Contact</a>
+            <br>
+            &copy; Bramhanda Studio 2025. Powered By: <a href="#powered" class="powered-link">Dark White technology</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    // --- Mobile Menu Toggle Function ---
+    function toggleMenu() {
+        const menuNav = document.getElementById('mainNav');
+        menuNav.classList.toggle('active');
+    }
+    
+    // The following two sections of code were related to a 'carousel' 
+    // and have been removed as the 'Get in Touch' page HTML does not contain a carousel.
+    
+    // // Start automatic sliding
+    // startAutoSlide();
+    
+    // // Pause on hover
+    // const carouselContainer = document.querySelector('.carousel-container');
+    // carouselContainer.addEventListener('mouseenter', () => {
+    //     clearInterval(autoSlideInterval);
+    // });
+    
+    // carouselContainer.addEventListener('mouseleave', () => {
+    //     startAutoSlide();
+    // });
+    
+    // Function to create floating particles in the background
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random size
+            const size = Math.random() * 5 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Random position
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            
+            // Random animation timing
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = Math.random() * 4 + 4 + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    // Handle form submission
+    function handleFormSubmission() {
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const btn = form.querySelector('.submit-btn');
+            const successMsg = document.getElementById('successMessage');
+            
+            // 1. Sending state
+            const originalText = btn.textContent;
+            
+            btn.textContent = 'Sending...';
+            btn.style.background = 'linear-gradient(135deg, #b8941e, #d4af37)'; // Simulate a background change
+            
+            // Simulate network request delay
+            setTimeout(() => {
+                // 2. Success state
+                successMsg.style.display = 'block';
+                btn.textContent = 'Sent!';
+                // Change background to a success color (green)
+                btn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                
+                // 3. Reset state after a delay
+                setTimeout(() => {
+                    form.reset();
+                    btn.textContent = originalText;
+                    // Reset background to the original gold gradient for next submission
+                    btn.style.background = 'linear-gradient(135deg, #d4af37, #b8941e)';
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }, 1500);
+        });
+    }
+    
+    // Add glow effect on mouse move (requires the CSS variable in style.css)
+    function addGlowEffect() {
+        const container = document.querySelector('.container');
+        if (!container) return;
+    
+        container.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Set CSS variables for the optional glow effect
+            this.style.setProperty('--mouse-x', x + 'px');
+            this.style.setProperty('--mouse-y', y + 'px');
+        });
+    }
+    
+    // Initialize all functionality on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+        handleFormSubmission();
+        addGlowEffect();
+    });
+</script>
+</body>
+</html>

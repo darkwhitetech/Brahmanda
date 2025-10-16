@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bramhanda - Music Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Golden Theme Color Palette --- */
+        :root {
+            --gold: #d4af37;
+            --dark-background: #1a1a1a;
+            --text-color: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+        }
+
+        /* --- Header Styles --- */
+        #main-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 50px; /* Reduced vertical padding */
+        }
+
+        /* The nav now acts as the primary flex container for the logo and links */
+        nav {
+            display: flex;
+            justify-content: center; /* Center everything */
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100px; /* Base height */
+        }
+
+        /* --- Logo Styles (Centered and Absolute) --- */
+        .logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 120px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Allows click through to links behind it if logo image is transparent */
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* --- Navigation Links Container --- */
+        .main-nav {
+            display: flex;
+            justify-content: space-between; /* Space out items */
+            align-items: center;
+            width: 100%;
+            max-width: 1100px; /* Control max spread of links */
+            list-style: none;
+            position: relative;
+            /* Ensure the nav list itself is centered and takes up the horizontal space */
+        }
+
+        .main-nav li {
+            text-align: center;
+            flex-basis: 20%; /* Give equal space for the 4 links + 1 reserved logo spot (20% * 5 = 100%) */
+        }
+
+        /* Hiding the logo's physical space placeholder */
+        .logo-placeholder {
+            flex-basis: 20%;
+            width: 20%;
+            visibility: hidden;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 8px;
+            transition: color 0.4s ease;
+        }
+
+        /* Classy underline hover effect */
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--gold);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+/* 12. Media Query for Tablet/Small Desktop */
+@media (max-width: 992px) {
+    .composers-features-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        padding: 0 50px;
+    }
+}
+
+/* 13. Media Query for Mobile */
+@media (max-width: 576px) {
+    .composers-section {
+        padding: 60px 10px;
+    }
+    
+    .composers-section-title {
+        font-size: 2em;
+    }
+    
+    .composers-section-subtitle {
+        margin-bottom: 40px;
+    }
+
+    .composers-features-grid {
+        padding: 0 10px;
+    }
+    
+    .composers-icon-box {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .composers-icon-box i {
+        font-size: 2.5em;
+    }
+    
+    .composers-feature-card {
+        padding: 10px; /* Reduce padding on mobile */
+    }
+}
+
+        /* --- Mobile Styles --- */
+        @media (max-width: 768px) {
+            #main-header {
+                padding: 15px 20px;
+                height: auto;
+            }
+
+            nav {
+                flex-direction: column;
+                height: auto;
+                justify-content: flex-start; /* Align elements to the top on mobile */
+            }
+
+            .logo {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 150px;
+                height: 80px;
+                margin-bottom: 15px;
+                order: -1; /* Put the logo first */
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px 0;
+                width: 100%;
+                max-width: none;
+                text-align: center;
+                background: rgba(26, 26, 26, 0.9);
+            }
+
+            .main-nav.active {
+                display: flex;
+            }
+
+            /* Hide placeholder on mobile to allow links to stack */
+            .logo-placeholder {
+                display: none;
+            }
+
+            .carousel-container {
+                height: 60vh;
+            }
+
+            .carousel-quote h2 {
+                font-size: 2em;
+            }
+
+            .carousel-quote p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav a {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .corner {
+                display: none;
+            }
+        }
+
+        .about-header {
+            position: relative;
+            height: 50vh;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 120px; 
+        }
+
+        .about-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(218, 165, 32, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .golden-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #DAA520, #FFD700, #DAA520, transparent);
+            animation: shimmer 3s linear infinite;
+        }
+
+        .line-top {
+            top: 20%;
+            width: 100%;
+        }
+
+        .line-bottom {
+            bottom: 20%;
+            width: 100%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .content h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700, #DAA520, #FFA500, #FFD700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease infinite;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .content p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #DAA520;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .decorative-corner {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #DAA520;
+        }
+
+        .corner-tl {
+            top: 10%;
+            left: 5%;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-br {
+            bottom: 10%;
+            right: 5%;
+            border-left: none;
+            border-top: none;
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+            opacity: 0.4;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 90%; animation-delay: 8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) scale(0); }
+            50% { transform: translateY(-20px) scale(1); }
+        }
+
+        /* --- NEW: Studio Mission Section --- */
+        .studio-mission-section {
+            padding: 80px 40px;
+            background-color: var(--dark-background);
+            text-align: center;
+        }
+
+        .mission-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .mission-content h2 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .mission-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: var(--gold);
+        }
+
+        .mission-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .studio-mission-section {
+                padding: 60px 20px;
+            }
+            .mission-content h2 {
+                font-size: 2em;
+            }
+            .mission-content p {
+                font-size: 1em;
+            }
+        }
+
+
+/* --- Footer --- */
+.studio-footer-section {
+    font-family: var(--font-stack);
+    background-color: #000000; 
+    color: var(--text-color);
+}
+
+.footer-main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.footer-logo-area {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    max-width: 200px;
+    height: auto;
+}
+
+.footer-heading {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.footer-column {
+    flex-basis: 30%;
+    line-height: 1.6;
+}
+
+.footer-contact .contact-details p {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+    color: var(--secondary-text-color);
+}
+
+.footer-contact .contact-details strong {
+    color: var(--text-color);
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+}
+
+.footer-social {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon-link {
+    color: var(--text-color);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) ease;
+}
+
+.social-icon-link:hover {
+    color: var(--gold);
+}
+
+.footer-training {
+    flex-basis: 30%;
+}
+
+.footer-training a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    font-size: 0.95em;
+    transition: color var(--transition-speed) ease;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.footer-training a:hover {
+    color: var(--gold);
+}
+
+.footer-bottom-strip {
+    background-color: #000000; 
+    padding: 20px 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+}
+
+.footer-copyright {
+    font-size: 0.8em;
+    color: var(--secondary-text-color);
+    line-height: 1.8;
+}
+
+.footer-copyright a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.footer-copyright a:hover {
+    color: var(--gold);
+}
+
+.powered-link {
+    color: var(--gold) !important;
+}
+
+@media (max-width: 768px) {
+    .footer-main-content {
+        flex-direction: column;
+        padding: 40px 20px;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .footer-logo-area {
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .footer-column {
+        flex-basis: 100%;
+        max-width: 300px;
+    }
+
+    .footer-heading {
+        margin-bottom: 15px;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-training a {
+        display: inline;
+        margin: 0 5px;
+    }
+}
+  </style>
+</head>
+<body>
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+
+    <header id="main-header">
+        <nav>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <img src="logo.png" href="../index.html" alt="Bramhanda Music Studio Logo">
+            </div>
+
+            <ul class="main-nav" id="mainNav">
+                <li><a href="../index.html">HOME</a></li>
+                <li><a href="../about/about.html">ABOUT</a></li>
+                <li class="logo-placeholder"></li>
+                <li><a href="../gallary/gallary.html">GALLERY</a></li>
+                <li><a href="../contact/contact.html">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+     <section class="about-header">
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        
+        <div class="golden-line line-top"></div>
+        <div class="golden-line line-bottom"></div>
+        
+        <div class="decorative-corner corner-tl"></div>
+        <div class="decorative-corner corner-br"></div>
+        
+        <div class="content">
+            <h1>About Bramandha</h1>
+            <p>Discover excellence through innovation and timeless elegance</p>
+        </div>
+    </section>
+
+    <section class="studio-mission-section">
+        <div class="mission-content">
+            <h2>Our Philosophy</h2>
+            <p>At Bramhanda, we believe that music is the universal language that connects souls. Our studio was born from a passion for pristine sound and a desire to create an environment where artists can truly flourish. We blend state-of-the-art technology with a deep understanding of musical artistry to help you achieve the perfect sound. Whether you are a seasoned professional or a budding artist, our mission is to provide you with the tools, expertise, and creative space to bring your sonic vision to life. We are more than just a studio; we are collaborators in your creative journey.</p>
+        </div>
+    </section>
+    <footer class="studio-footer-section">
+    <div class="footer-main-content">
+        
+        <div class="footer-logo-area">
+            <img src="logo.png" alt="Bramhanda Music Studio Logo" class="footer-logo">
+        </div>
+        
+        <div class="footer-column footer-contact">
+            <h4 class="footer-heading">Contact</h4>
+            <div class="contact-details">
+                <p><strong>Head Office:</strong></p>
+                <p>Bhanimandal, Lalitpur, Nepal</p>
+                <p><strong>Administrative Office:</strong></p>
+                <p>Dhobighat, Lalitpur, Nepal</p>
+                <p>info@bramhandastudio.com</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram" class="social-icon-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook" class="social-icon-link"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column footer-training">
+            <h4 class="footer-heading">Services & Studio Info</h4>
+            <div class="training-details">
+                <p><a href="#services">Mixing & Mastering</a></p>
+                <p><a href="#dolby">Dolby Atmos System</a></p>
+                <p><a href="#reserve">Reserve Studio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom-strip">
+        <p class="footer-copyright">
+            <a href="#terms">Terms and Conditions</a> | 
+            <a href="#privacy">Privacy Policy</a> | 
+            <a href="#contact">Contact</a>
+            <br>
+            &copy; Bramhanda Studio 2025. Powered By: <a href="#powered" class="powered-link">Dark White technology</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    // --- Mobile Menu Toggle Function ---
+    function toggleMenu() {
+        const menuNav = document.getElementById('mainNav');
+        menuNav.classList.toggle('active');
+    }
+    
+    </script>
+</body>
+</html>

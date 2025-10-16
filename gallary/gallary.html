@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bramhanda - Music Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Golden Theme Color Palette --- */
+        :root {
+            --gold: #d4af37;
+            --dark-background: #1a1a1a;
+            --text-color: #f5f5f5;
+            --secondary-text-color: #cccccc;
+            --font-stack: 'Montserrat', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            /* FIX: Keep overflow-x hidden to prevent horizontal scrollbar caused by wide elements */
+            overflow-x: hidden;
+            background-color: var(--dark-background);
+            color: var(--text-color);
+            /* Ensure the body itself doesn't exceed the viewport width */
+            width: 100vw; 
+        }
+
+        /* --- CORNER FIX: Added definition for the missing .corner class --- */
+        .corner {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gold);
+            z-index: 5;
+            pointer-events: none; /* Ignore clicks */
+        }
+        /* Style positioning for safe placement */
+        .corner.top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; border-radius: 5px 0 0 0; }
+        .corner.top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; border-radius: 0 5px 0 0; }
+        .corner.bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; border-radius: 0 0 0 5px; }
+        .corner.bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; border-radius: 0 0 5px 0; }
+        /* --- END CORNER FIX --- */
+
+
+        /* --- Header Styles --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 10px 50px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100px;
+        }
+
+        /* --- Logo Styles (Centered and Absolute) --- */
+        .logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 120px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* --- Navigation Links Container --- */
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            list-style: none;
+            position: relative;
+        }
+
+        .main-nav li {
+            text-align: center;
+            flex-basis: 20%;
+        }
+
+        /* Hiding the logo's physical space placeholder */
+        .logo-placeholder {
+            flex-basis: 20%;
+            width: 20%;
+            visibility: hidden;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 8px;
+            transition: color 0.4s ease;
+        }
+
+        /* Classy underline hover effect */
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--gold);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+
+        /* --- Mobile Styles --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                height: auto;
+            }
+
+            nav {
+                flex-direction: column;
+                height: auto;
+                justify-content: flex-start;
+            }
+
+            .logo {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 150px;
+                height: 80px;
+                margin-bottom: 15px;
+                order: -1;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                gap: 15px;
+                padding: 10px 0;
+                width: 100%;
+                max-width: none;
+                text-align: center;
+                background: rgba(26, 26, 26, 0.9);
+            }
+
+            .main-nav.active {
+                display: flex;
+            }
+
+            /* Hide placeholder on mobile to allow links to stack */
+            .logo-placeholder {
+                display: none;
+            }
+
+            .carousel-container {
+                height: 60vh;
+            }
+
+            .carousel-quote h2 {
+                font-size: 2em;
+            }
+
+            .carousel-quote p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav a {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            /* Corner elements are small and fixed, safe to keep on mobile */
+        }
+
+            /* These mobile overrides were placed oddly in your original code, merging them into the general mobile block */
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 2rem;
+            }
+
+            .prev-btn {
+                left: 10px;
+            }
+
+            .next-btn {
+                right: 10px;
+            }
+
+            .close-btn {
+                top: 10px;
+                right: 10px;
+            }
+        
+
+        .counter {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d4af37;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 2px solid #d4af37;
+        }
+
+          .gallery-container {
+            /* FIX: Centered the container and ensured proper width */
+            margin: 0 auto; 
+            max-width: 1400px;
+            padding: 0 20px; /* Add padding to prevent edge-to-edge content on small screens */
+            z-index: 2;
+            margin-top: 130px;
+        }
+
+
+        h1 {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 4rem);
+            background: linear-gradient(135deg, #d4af37 0%, #f9d77e 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .gallery-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #d4af37;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
+            border-color: #f9d77e;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .gallery-overlay p {
+            color: #f9d77e;
+            font-size: 0.9rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* FIX: Ensure the lightbox itself doesn't cause overflow */
+            max-width: 100vw; 
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.5);
+        }
+
+        .close-btn, .nav-btn {
+            position: absolute;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .close-btn:hover, .nav-btn:hover {
+            background: #f9d77e;
+            transform: scale(1.1);
+        }
+
+        .close-btn {
+            top: 20px;
+            right: 20px;
+        }
+
+        .nav-btn.prev {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-btn.next {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-btn.prev:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-btn.next:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(212, 175, 55, 0.9);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .close-btn, .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .nav-btn.prev {
+                left: 10px;
+            }
+
+            .nav-btn.next {
+                right: 10px;
+            }
+
+            .close-btn {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+
+/* 1. Main Footer Container (.studio-footer-section) */
+.studio-footer-section {
+    font-family: var(--font-stack);
+    /* Applying the black background color directly to the section */
+    background-color: #000000; 
+    color: var(--text-color);
+}
+
+/* 2. Main Content Wrapper (.footer-main-content) */
+.footer-main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* 3. Logo Area (.footer-logo-area) */
+.footer-logo-area {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    max-width: 200px;
+    height: auto;
+    /* Retained filter to ensure the logo is visible against black, 
+       as discussed, this makes a dark logo white/light. */
+
+}
+
+/* 4. Column Headers (.footer-heading) */
+.footer-heading {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+/* 5. Contact Column (.footer-contact) */
+.footer-column {
+    flex-basis: 30%;
+    line-height: 1.6;
+}
+
+.footer-contact .contact-details p {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+    color: var(--secondary-text-color);
+}
+
+.footer-contact .contact-details strong {
+    color: var(--text-color);
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+}
+
+/* 6. Social Media Icons (.footer-social) */
+.footer-social {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon-link {
+    color: var(--text-color);
+    font-size: 1.5em;
+    transition: color var(--transition-speed) ease;
+}
+
+.social-icon-link:hover {
+    color: var(--gold);
+}
+
+/* 7. Training/Services Column (.footer-training) */
+.footer-training {
+    flex-basis: 30%;
+}
+
+.footer-training a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    font-size: 0.95em;
+    transition: color var(--transition-speed) ease;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.footer-training a:hover {
+    color: var(--gold);
+}
+
+/* 8. Bottom Copyright Strip (.footer-bottom-strip) */
+.footer-bottom-strip {
+    /* Ensuring the strip is also black */
+    background-color: #000000; 
+    padding: 20px 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+}
+
+/* 9. Copyright Text (.footer-copyright) */
+.footer-copyright {
+    font-size: 0.8em;
+    color: var(--secondary-text-color);
+    line-height: 1.8;
+}
+
+.footer-copyright a {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.footer-copyright a:hover {
+    color: var(--gold);
+}
+
+.powered-link {
+    color: var(--gold) !important;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .footer-main-content {
+        flex-direction: column;
+        padding: 40px 20px;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .footer-logo-area {
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .footer-column {
+        flex-basis: 100%;
+        max-width: 300px;
+    }
+
+    .footer-heading {
+        margin-bottom: 15px;
+    }
+    
+    .footer-social {
+        justify-content: center;
+    }
+    
+    .footer-training a {
+        display: inline;
+        margin: 0 5px;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+
+    <header>
+        <nav>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="logo">
+                <img src="logo.png" href="../index.html" alt="Bramhanda Music Studio Logo">
+            </div>
+
+            <ul class="main-nav" id="mainNav">
+                <li><a href="../index.html">HOME</a></li>
+                <li><a href="../about/about.html">ABOUT</a></li>
+
+                <li class="logo-placeholder"></li>
+
+                <li><a href="../gallary/gallary.html">GALLERY</a></li>
+                <li><a href="../contact/contact.html">CONTACT US</a></li>
+            </ul>
+        </nav>
+    </header>
+
+     <div class="gallery-container">
+        <h1>Our Gallery</h1>
+        
+        <div class="gallery-grid" id="gallery">
+            <!-- Gallery items will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <button class="close-btn" onclick="closeLightbox()">&times;</button>
+        <button class="nav-btn prev" onclick="changeImage(-1)">&#10094;</button>
+        <button class="nav-btn next" onclick="changeImage(1)">&#10095;</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Gallery Image">
+        </div>
+        <div class="image-counter" id="counter"></div>
+    </div>
+
+
+
+<footer class="studio-footer-section">
+    <div class="footer-main-content">
+        
+        <div class="footer-logo-area">
+            <img src="logo.png" alt="Bramhanda Music Studio Logo" class="footer-logo">
+        </div>
+        
+        <div class="footer-column footer-contact">
+            <h4 class="footer-heading">Contact</h4>
+            <div class="contact-details">
+                <p><strong>Head Office:</strong></p>
+                <p>Bhanimandal, Lalitpur, Nepal</p>
+                <p><strong>Administrative Office:</strong></p>
+                <p>Dhobighat, Lalitpur, Nepal</p>
+                <p>info@bramhandastudio.com</p>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram" class="social-icon-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook" class="social-icon-link"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column footer-training">
+            <h4 class="footer-heading">Services & Studio Info</h4>
+            <div class="training-details">
+                <p><a href="#services">Mixing & Mastering</a></p>
+                <p><a href="#dolby">Dolby Atmos System</a></p>
+                <p><a href="#reserve">Reserve Studio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom-strip">
+        <p class="footer-copyright">
+            <a href="#terms">Terms and Conditions</a> | 
+            <a href="#privacy">Privacy Policy</a> | 
+            <a href="#contact">Contact</a>
+            <br>
+            &copy; Bramhanda Studio 2025. Powered By: <a href="#powered" class="powered-link">Dark White technology</a>
+        </p>
+    </div>
+</footer>
+
+
+
+<script>
+        function toggleMenu() {
+            const mainNav = document.getElementById('mainNav');
+            mainNav.classList.toggle('active');
+        }
+
+         const galleryImages = [
+            // Using placeholder images for a functional gallery
+            {
+                src: 'images/image.png',
+                title: 'Studio A: Mixing Console',
+                description: 'Our main mixing and mastering suite.'
+            },
+            {
+                src: 'images/image copy.png',
+                title: 'Acoustic Vocal Booth',
+                description: 'Perfectly treated space for pristine vocals.'
+            },
+            {
+                src: 'images/image copy 2.png',
+                title: 'Vintage Synthesizers',
+                description: 'A collection of classic analogue gear.'
+            },
+            {
+                src: 'images/image copy 3.png',
+                title: 'Live Drum Recording Room',
+                description: 'Large room with variable acoustics.'
+            },
+            {
+                src: 'images/image copy 4.png',
+                title: 'Control Room View',
+                description: 'The heart of Bramhanda Music Studio.'
+            },
+            {
+                src: 'images/image copy 5.png',
+                title: 'Artist Lounge',
+                description: 'A comfortable space to relax and create.'
+            },
+            {
+                src: 'images/image copy 6.png',
+                title: 'Premium Instrument Wall',
+                description: 'A selection of high-end guitars and basses.'
+            },
+            {
+                src: 'logo.png',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+
+            {
+                src: 'logo.png',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'logo.png',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'logo.png',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },
+              {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },  {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },  {
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            },{
+                src: 'https://placehold.co/800x600/1a1a1a/d4af37?text=MASTERING+SUITE',
+                title: 'Dedicated Mastering Suite',
+                description: 'Finishing touches with world-class monitors.'
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function generateGallery() {
+            const gallery = document.getElementById('gallery');
+            galleryImages.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.onclick = () => openLightbox(index);
+                // Placeholder images are used to replace the original unsplash URLs
+                item.innerHTML = `
+                    <img src="${image.src}" alt="${image.title}" onerror="this.onerror=null;this.src='https://placehold.co/800x600/1a1a1a/d4af37?text=IMAGE+ERROR';">
+                    <div class="gallery-overlay">
+                        <h3>${image.title}</h3>
+                        <p>${image.description}</p>
+                    </div>
+                `;
+                gallery.appendChild(item);
+            });
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('counter');
+            
+            img.src = galleryImages[index].src;
+            counter.textContent = `${index + 1} / ${galleryImages.length}`;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = galleryImages.length - 1;
+            if (currentIndex >= galleryImages.length) currentIndex = 0;
+            
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('counter');
+            
+            img.style.animation = 'none';
+            setTimeout(() => {
+                img.src = galleryImages[currentIndex].src;
+                counter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+                img.style.animation = 'zoomIn 0.3s ease';
+            }, 50);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+            }
+        });
+
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        // Generate gallery on load
+        window.onload = generateGallery;
+
+        
+    </script>
+</body>
+</html>
